@@ -1,0 +1,228 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* Quiz container */
+.quiz_flex {
+	display: -ms-flexbox;
+	display: flex;
+}
+.quiz_num {
+	margin: 0 .5rem 0 0;
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: #006ba1;
+	line-height: 1.2;
+}
+.quiz_flex-fill {
+	flex: 1 1 auto;
+}
+.quiz_flex h2 {
+	margin: 0 0 .75rem 0;
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: #006ba1;
+	line-height: 1.2;
+}
+
+/* Quiz intro */
+.quiz_intro {
+	padding: 1.5rem;
+	border: .125rem solid #006ba1;
+	border-radius: .25rem;
+	font-size: 1.5rem;
+	font-weight: 500;
+}
+
+/* Results */
+.quiz_response {
+	font-size: 1.25rem;
+	margin: 0 0 .75rem 0;
+}
+.quiz_alert {
+	position: relative;
+	padding: 0.75rem 1.25rem;
+	margin: 0 0 1.75rem 0;
+	border: 1px solid transparent;
+	border-radius: 0.25rem;
+}
+.quiz_alert i {
+	margin-right: .75rem;
+}
+.quiz_alert-success {
+	color: #155724;
+	background-color: #d4edda;
+	border-color: #c3e6cb;
+}
+.quiz_alert-success a {
+	color: #0b2e13;
+}
+.quiz_alert-fail {
+	color: #721c24;
+	background-color: #f8d7da;
+	border-color: #f5c6cb;
+}
+.quiz_alert-fail a {
+	color: #491217;
+}
+
+/* Radio button */
+.quiz_radio-button {
+	margin-top: 2rem;
+}
+.quiz_radio-button input[type="radio"] {
+	position: absolute;
+	left: 0;
+	z-index: -1;
+	width: 1rem;
+	height: 1.25rem;
+	opacity: 0;
+	margin: 0;
+	padding: 0;
+	overflow: visible;
+}
+.quiz_radio-button input[type="radio"] + label {
+	display: inline-block;
+	margin: 0;
+	font-size: 1.25rem;
+	line-height: 2rem;
+}
+.quiz_radio-button input[type="radio"] + label span {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	margin: -.25rem .25rem 0 0;
+	border-radius: 50%;
+	border: .125rem solid #ffffff;
+	box-shadow: 0 .125rem .25rem 0 rgba(0, 0, 0, 0.33);
+	background-color: grey;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.quiz_radio-button input[type="radio"]:checked + label span {
+	background: #006ba1 url("https://www.positronx.io/wp-content/uploads/2019/06/tick-icon-4657-01.png") center center no-repeat;
+}
+
+/* Buttons */
+.quiz_btn {
+	display: inline-block;
+	font-weight: 400;
+	color: #fff;
+	text-align: center;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-color: #006ba1;
+	border: 1px solid #fff;
+	margin: 0;
+	padding: 0.5rem 1rem;
+	font-size: 1.5rem;
+	line-height: 1.5;
+	border-radius: 0.3rem;
+	overflow: visible;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.quiz_btn:hover {
+	border: 1px solid #006ba1;
+	background: #fff;
+	color: #006ba1;
+}
+.quiz_btn-group {
+	position: relative;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	vertical-align: middle;
+	width: 100%;
+}
+.quiz_btn-group > .quiz_btn {
+	position: relative;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
+}
+.quiz_btn-group > .quiz_btn:hover {
+	z-index: 1;
+}
+.quiz_btn-group > .quiz_btn:not(:first-child) {
+	margin-left: -1px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+.quiz_btn-group > .quiz_btn:not(:last-child) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+#quiz_start, 
+#quiz_prev, 
+#quiz_next, 
+#quiz_results, 
+#quiz_restart, 
+#quiz_restart_modal {
+	margin-top: 2rem;
+}
+#quiz_start, 
+#quiz_restart, 
+#quiz_restart_modal {
+	display: block;
+	width: 100%;
+}
+#quiz_start, 
+#quiz_restart {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+#quiz_start i, 
+#quiz_prev i, 
+#quiz_next i, 
+#quiz_results i, 
+#quiz_restart i, 
+#quiz_restart_modal i {
+	margin-left: .75rem;
+	margin-right: .75rem;
+	font-size: 1.25rem;
+}
+
+/* Progress bar */
+.quiz_progress {
+	display: -ms-flexbox;
+	display: flex;
+	height: 1.75rem;
+	margin-top: 1.125rem;
+	overflow: hidden;
+	line-height: 0;
+	font-size: 1rem;	
+	background-color: #e9ecef;
+	border-radius: 0.25rem;
+}
+.quiz_progress-bar {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-ms-flex-pack: center;
+	justify-content: center;
+	overflow: hidden;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	background-color: #fed200;
+	transition: width 0.6s ease;
+}
+
+/* Modal */
+#quiz_modal .modal-header {
+	background-color: #006ba1;
+	color: #fff;
+}
+#quiz_modal .close {
+    color: #fff;
+    text-shadow: 0 1px 0 #000;
+}
+#quiz_modal .close:hover {
+    color: #fff;
+}
+#quiz_modal .modal-body {
+	font-size: 1.25rem;	
+}

@@ -1,0 +1,82 @@
+[{
+	"questions": [{
+		"question": "Quanto vale circa il tuo TFR?",
+		"description": null,
+		"answers": [{
+			"answer": "Circa l'8% della mia retribuzione annua lorda",
+			"alert": "<strong>La risposta non è corretta.</strong> Guarda la pillola video sul <a href=\"http://webapp.perte.online/slide/tfr/res/\" target=\"_blank\">TFR!</a>",
+			"true": 0
+		},
+		{
+			"answer": "Circa il 7% della mia retribuzione annua lorda ",
+			"alert": "<strong>Esatto!</strong> Se vuoi scoprire altri dettagli guarda la pillola video sul <a href=\"http://webapp.perte.online/slide/tfr/res/\" target=\"_blank\">TFR!</a>",
+			"true": 1
+		},
+		{
+			"answer": "Circa il 10% della mia retribuzione annua lorda ",
+			"alert": "<strong>La risposta non è corretta.</strong> Guarda la pillola video sul <a href=\"http://webapp.perte.online/slide/tfr/res/\" target=\"_blank\">TFR!</a>",
+			"true": 0
+		}]
+	},
+	{
+		"question": "È possibile chiedere degli anticipi del tuo TFR?",
+		"description": null,
+		"answers": [{
+			"answer": "Sì, ma solo se ho il TFR in Azienda ",
+			"alert": "<strong>La risposta non è corretta.</strong> Guarda la pillola video sul <a href=\"http://webapp.perte.online/slide/tfr/res/\" target=\"_blank\">TFR!</a>",
+			"true": 0
+		},
+		{
+			"answer": "No, il TFR viene corrisposto alla cessazione del rapporto di lavoro ",
+			"alert": "<strong>La risposta non è corretta.</strong> Guarda la pillola video sul <a href=\"http://webapp.perte.online/slide/tfr/res/\" target=\"_blank\">TFR!</a>",
+			"true": 0
+		},
+		{
+			"answer": "Sì, sia che sia in Azienda sia che sia nel Fondo pensione ",
+			"alert": "<strong>Esatto!</strong> Se vuoi scoprire altri dettagli guarda la pillola video sul <a href=\"http://webapp.perte.online/slide/tfr/res/\" target=\"_blank\">TFR!</a>",
+			"true": 1
+		}]
+	},
+	{
+		"question": "Per quali motivi puoi chiedere la Cessione del Quinto?",
+		"description": null,
+		"answers": [{
+			"answer": "Per qualunque esigenza di liquidità ",
+			"alert": "<strong>Esatto!</strong> Se vuoi scoprire altri dettagli guarda la pillola video sulla <a href=\"http://webapp.perte.online/slide/cessione-quinto/res/\" target=\"_blank\">Cessione del Quinto!</a>",
+			"true": 1
+		},
+		{
+			"answer": "Solo per acquisti importanti superiori a 5.000 €  ",
+			"alert": "<strong>La risposta non è corretta.</strong> Guarda la pillola video sulla <a href=\"http://webapp.perte.online/slide/cessione-quinto/res/\" target=\"_blank\">Cessione del Quinto!</a>",
+			"true": 0
+		},
+		{
+			"answer": "Solo se il mio datore di lavoro è d'accordo  ",
+			"alert": "<strong>La risposta non è corretta.</strong> Guarda la pillola video sulla <a href=\"http://webapp.perte.online/slide/cessione-quinto/res/\" target=\"_blank\">Cessione del Quinto!</a>",
+			"true": 0
+		}]
+	},
+	{
+		"question": "A cosa devi prestare particolare attenzione quando chiedi un finanziamento?",
+		"description": null,
+		"answers": [{
+			"answer": "A nulla in particolare, mi fido della mia Banca",
+			"alert": "<strong>La risposta non è corretta.</strong> Guarda la pillola video sulla <a href=\"http://webapp.perte.online/slide/cessione-quinto/res/\" target=\"_blank\">Cessione del Quinto!</a>",
+			"true": 0
+		},
+		{
+			"answer": "Al TAN-Tasso Annuo Nominale, perché è il tasso di interesse ",
+			"alert": "<strong>La risposta non è corretta.</strong> Guarda la pillola video sulla <a href=\"http://webapp.perte.online/slide/cessione-quinto/res/\" target=\"_blank\">Cessione del Quinto!</a>",
+			"true": 0
+		},
+		{
+			"answer": "Al TAEG- Tasso Annuo Effettivo Globale, perché comprende anche alcuni costi",
+			"alert": "<strong>Esatto!</strong> Se vuoi scoprire altri dettagli guarda la pillola video sulla <a href=\"http://webapp.perte.online/slide/cessione-quinto/res/\" target=\"_blank\">Cessione del Quinto!</a>",
+			"true": 1
+		}]
+	}],
+	"params": {
+		"intro": 1,
+		"intromessage": "Informarsi, conoscere e approfondire è fondamentale per orientarsi nel mondo dell'economia e della finanza. In questa sezione puoi trovare informazioni per comprendere le principali nozioni, il linguaggio tecnico e alcune guide per gestire le scelte economiche della vita."
+	}
+}]

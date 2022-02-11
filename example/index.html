@@ -1,0 +1,97 @@
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz Educazione Finanziaria</title>
+
+<!-- meta tags -->
+<meta name="description" content="UNO STRUMENTO PER RIFLETTERE SUL TUO FUTURO PREVIDENZIALE">
+<meta name="keywords" content="">
+<meta name="robots" content="noindex,nofollow">
+
+<!-- favicon -->
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+<!-- Fogli di stile -->
+<link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="../dist/jquery.quiz.css">
+</head>
+<body>
+
+<!-- header -->
+<header class="header">
+  <div class="container">
+    <div class="bg-header d-flex justify-content-start align-items-md-center flex-column flex-md-row align-items-sm-start">
+      <div class="logo"></div>
+      <h1 class="titolo">Quiz Educazione Finanziaria</h1>
+    </div>
+  </div>
+</header>
+
+<!-- main -->
+<section class="main">
+  <div class="container">
+    <div id="contenuto"></div>
+  </div>
+</section>
+
+<!-- footer -->
+<div class="footer">
+  <div class="container">
+    <div class="bg-footer">© 2021 Reload - Laboratorio multimediale. All rights reserved.</div>
+  </div>
+</div>
+
+<!-- Scripts --> 
+<script src="../lib/jQuery/dist/jquery.min.js"></script> 
+<script src="../lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> 
+<script src="../dist/jquery.quiz.js"></script> 
+<script src="../dist/i18n/messages_it.js"></script> 
+<script>
+$(document).ready(function(){
+	
+	var pathJson = window.location.pathname.replace(/\/[^\/]+?\.[^\/]+?$/, '/');
+	
+	$('#contenuto').quiz({
+		quizJson: pathJson + "quiz.json",
+		onResults: function(good, total){
+			
+			var perc = good / total;
+			
+			var alert = $('<div class="alert"></div>')
+				.prependTo(this);
+			
+			if(perc == 0){
+				
+				alert.addClass('alert-danger')
+					.html('Tutto sbagliato! Non hai azzeccato una risposta. Datti all\'ippica.');
+			} else if(perc > 0 && perc <= 0.25){
+				
+				alert.addClass('alert-danger')
+					.html('Risultato scarso! Hai azzeccato solo ' + good + ' risposte su ' + total + '. Riprova.');
+			} else if(perc > 0.25 && perc <= 0.5){
+				
+				alert.addClass('alert-danger')
+					.html('Appena sufficiente! Hai azzeccato ' + good + ' risposte su ' + total + '. Puoi fare meglio.');
+			} else if(perc > 0.5 && perc <= 0.75){
+				
+				alert.addClass('alert-success')
+					.html('Risultato discreto! Hai azzeccato ' + good + ' risposte su ' + total + '. Prova ancora.');
+			} else if(perc > 0.75 && perc < 1){
+				
+				alert.addClass('alert-success')
+					.html('Risultato buono! Hai azzeccato ' + good + ' risposte su ' + total + '. Ci siamo quasi.');
+			} else if(perc == 1){
+				
+				alert.addClass('alert-success')
+					.html('Complimenti, hai risposto a tutte le domande!');
+			}
+		}
+	}); 
+});
+</script>
+</body>
+</html>

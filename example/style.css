@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+body {
+	font-family: 'Roboto', sans-serif;
+	background: #006ba1;
+}
+/**/
+.header {
+	background: #fed200;
+}
+.header .bg-header {
+	background: url("img/bg-header.png") right bottom no-repeat;
+}
+.footer {
+	background: #006ba1;
+	height: 70px;
+}
+.footer .bg-footer {
+	background: url("img/bg-header.png") right bottom no-repeat;
+	height: 55px;
+	padding: 20px;
+	color: #fff;
+}
+.header .logo {
+	width: 263px;
+	height: 84px;
+	background: url("img/logo-bianco.png") center center no-repeat;
+	margin-right: auto;
+	margin-top: 20px;
+    margin-bottom: 20px;
+	
+}
+.header h1.titolo {
+	margin-top: 30px;
+	font-size: 24px;
+	color: #fff;
+	text-transform: uppercase;
+}
+.main {
+	background: url("img/general-background.jpg");
+}
+#contenuto {
+	padding: 5% 5% 10% 5%;
+}
+@media (max-width: 767.98px) {
+.header h1.titolo {
+	margin-top: 0;
+}
+}
