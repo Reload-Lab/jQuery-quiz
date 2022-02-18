@@ -6,14 +6,14 @@
 <title>Quiz Educazione Finanziaria</title>
 
 <!-- meta tags -->
-<meta name="description" content="UNO STRUMENTO PER RIFLETTERE SUL TUO FUTURO PREVIDENZIALE">
+<meta name="description" content="GEOGRAPHY QUIZ">
 <meta name="keywords" content="">
 <meta name="robots" content="noindex,nofollow">
 
 <!-- favicon -->
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 
-<!-- Fogli di stile -->
+<!-- stylesheets -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -26,7 +26,7 @@
   <div class="container">
     <div class="bg-header d-flex justify-content-start align-items-md-center flex-column flex-md-row align-items-sm-start">
       <div class="logo"></div>
-      <h1 class="titolo">Quiz Educazione Finanziaria</h1>
+      <h1 class="titolo">GEOGRAPHY QUIZ</h1>
     </div>
   </div>
 </header>
@@ -41,11 +41,11 @@
 <!-- footer -->
 <div class="footer">
   <div class="container">
-    <div class="bg-footer">© 2021 Reload - Laboratorio multimediale. All rights reserved.</div>
+    <div class="bg-footer">© 2022 Reload - Laboratorio multimediale. All rights reserved.</div>
   </div>
 </div>
 
-<!-- Scripts --> 
+<!-- scripts --> 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script> 
 <script src="../dist/jquery.quiz.js"></script> 
 <script src="../dist/i18n/messages_it.js"></script> 
@@ -66,27 +66,27 @@ $(document).ready(function(){
 			if(perc == 0){
 				
 				alert.addClass('alert-danger')
-					.html('Tutto sbagliato! Non hai azzeccato una risposta. Datti all\'ippica.');
+					.html('All wrong! You didn\'t get an answer right. Go take up knitting!');
 			} else if(perc > 0 && perc <= 0.25){
 				
 				alert.addClass('alert-danger')
-					.html('Risultato scarso! Hai azzeccato solo ' + good + ' risposte su ' + total + '. Riprova.');
+					.html('Poor result! You only got ' + good + ' out of ' + total + ' answers right. Please try again.');
 			} else if(perc > 0.25 && perc <= 0.5){
 				
 				alert.addClass('alert-danger')
-					.html('Appena sufficiente! Hai azzeccato ' + good + ' risposte su ' + total + '. Puoi fare meglio.');
+					.html('Just enough! You got ' + good + ' out of ' + total + ' answers right. You can do better.');
 			} else if(perc > 0.5 && perc <= 0.75){
 				
 				alert.addClass('alert-success')
-					.html('Risultato discreto! Hai azzeccato ' + good + ' risposte su ' + total + '. Prova ancora.');
+					.html('Decent result! You got ' + good + ' out of ' + total + ' answers right. Please try again.');
 			} else if(perc > 0.75 && perc < 1){
 				
 				alert.addClass('alert-success')
-					.html('Risultato buono! Hai azzeccato ' + good + ' risposte su ' + total + '. Ci siamo quasi.');
+					.html('Good result! You got ' + good + ' out of ' + total + ' answers right. I think we\'re nearly there.');
 			} else if(perc == 1){
 				
 				alert.addClass('alert-success')
-					.html('Complimenti, hai risposto a tutte le domande!');
+					.html('Congratulations, you have answered all the questions!');
 			}
 		}
 	}); 

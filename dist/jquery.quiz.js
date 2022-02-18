@@ -1,28 +1,18 @@
-/**
- * MIT License
- * 
- * Copyright (c) 2021 Reload - Laboratorio multimediale (https://www.reloadlab.it/)
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+/*!
+ * jQuery Quiz Plugin
+ * https://github.com/Reload-Lab/jQuery-quiz
+ *
+ * @updated February 18, 2022
+ * @version 1.0
+ *
+ * @author Domenico Gigante - domenico.gigante@reloadlab.it
+ * @copyright (c) 2022 Reload Laboratorio Multimediale - httpa://www.reloadlab.it
+ * @license MIT
  */
  
 (function($){
+	
+	var version = 1.0;
 	
 	// Customizable texts according to the language
 	// (buttons, labels and error messages)
@@ -34,25 +24,56 @@
 		restart: 'Back to the top',
 		error: 'Error',
 		errmsg: [
-			'Please choose an answer',
-			'Some questions have not been answered. Please, back to the top to answer all questions'
+			'Please choose an answer.',
+			'Some questions have not been answered. Please, back to the top to answer all questions.'
 		]
 	}
 	
 	// Plugin
 	$.quiz = $.fn.quiz = function(options){
 		
-		// Static variables
+		// Internal variables
 		var quizJson,
+			settings = {},
 			params,
 			step = 0,
 			good = 0,
 			first = 0,
-			hashActual,
-			container = typeof this == 'object'? this.first(): null,
-			quiz = 'quiz_container',
-			modal = 'quiz_modal',
-			progress = 'quiz_progress';
+			hashActual;
+		
+		// Visual variable
+		var CONTAINER = typeof this == 'object'? this.first(): null,
+			QUIZ_ID = 'quiz_container',
+			ANSWER_ID = 'quiz_answer',
+			MODAL_ID = 'quiz_modal',
+			MODAL_TITLE_ID = 'quiz_mdltitle',
+			PROGRESS_ID = 'quiz_progress',
+			BTN_START_ID = 'quiz_start',
+			BTN_PREV_ID = 'quiz_prev',
+			BTN_NEXT_ID = 'quiz_next',
+			BTN_RESULTS_ID = 'quiz_results',
+			BTN_RESTART_ID = 'quiz_restart',
+			BTN_RESTART_MDL_ID = 'quiz_restart_modal',
+			INTRO_CLASS = 'quiz_intro',
+			FLEX_CLASS = 'quiz_flex',
+			FLEXFILL_CLASS = 'quiz_flex-fill',
+			NUM_CLASS = 'quiz_num',
+			RADIO_CLASS = 'quiz_radio-button',
+			ALERT_CLASS = 'quiz_alert',
+			SUCCESS_CLASS = 'quiz_alert-success',
+			FAIL_CLASS = 'quiz_alert-fail',
+			BTN_START_CLASS = 'quiz_btn',
+			BTN_CLASS = 'quiz_btn',
+			BTN_GROUP_CLASS = 'quiz_btn-group',
+			RESPONSE_CLASS = 'quiz_response',
+			PROGRESS_CLASS = 'quiz_progress',
+			PROGRESSBAR_CLASS = 'quiz_progress-bar',
+			PLAY_ICO = '<i class="fa fa-play" aria-hidden="true"></i>',
+			BACKWARD_ICO = '<i class="fa fa-step-backward" aria-hidden="true"></i>',
+			FORWARD_ICO = '<i class="fa fa-step-forward" aria-hidden="true"></i>',
+			REPEAT_ICO = '<i class="fa fa-repeat" aria-hidden="true"></i>',
+			THUMBSUP_ICO = '<i class="fa fa-thumbs-up" aria-hidden="true"></i>',
+			THUMBSDOWN_ICO = '<i class="fa fa-thumbs-down" aria-hidden="true"></i>';
 		
 		// Default settings
 		var defaults = {
@@ -70,84 +91,97 @@
 			// Localization of messages
 			localization: function(translation){
 				
+				// If 'translation' is an Object...
 				if(typeof translation == 'object'){
 					
-					text = $.extend(messages, translation);
+					// Change 'messages' with 'translation'
+					$.extend(messages, translation);
 				}
 			}
 		};
 		
-		// If options is a string...
+		// If 'options' is a string...
 		if(typeof options == 'string'){
 			
-			// If options is a method's name...
+			// If 'options' is a method's name...
 			if(methods[options]){
 				
 				// Call method
 				return methods[options].apply(this, Array.prototype.slice.call(arguments, 1));
-			} else{
+			} 
+			
+			// Else...
+			else{
 				
-				// Options must be the url to quiz json file
+				// 'Options' must be the url to quiz json file
 				options = {
 					quizJson: options
 				};
 			}
 		}
 		
-		// If options is an object, but the url to quiz json file isn't set...
+		// If 'options' is an object, but the url to quiz json file isn't set...
 		if(typeof options == 'object' && !options.quizJson){
 			
 			// Search for data-quiz-json in container tag
-			var url = container.data('quizJson');
-			if(url){
+			var url = CONTAINER.data('quizJson');
+			
+			// If 'url' is a string...
+			if(typeof url == 'string'){
 				
 				options.quizJson = url;
 			}
 		}
 		
-		// Merge options with default settings
-		var settings = $.extend(defaults, options);
+		// Merge 'options' with 'defaults'
+		$.extend(settings, defaults, options);
 		
 		
 		/*** EVENTS ***/
 		// Event: Record response
-		$(document).on('click', 'input[type="radio"]', function(e){
+		$(document).on('click', '*[data-quiz-value]', function(e){
 			
 			// Get cookie response
 			var response = JSON.parse(getCookie('response'));
 			
+			var name = $(this).data('quizName');
+			var value = $(this).data('quizValue');
+
 			// New response
 			var obj = {};
-			obj[this.name] = this.value;
+			obj[name] = '' + value;
 			
 			// Merge new response with other responses
-			response = $.extend(response, obj);
+			$.extend(response, obj);
 			
 			// Set cookie response
 			setCookie('response', JSON.stringify(response), settings.cookieExpire);
 		});
 		
 		// Event: Start the quiz
-		$(document).on('click', '#quiz_start', function(e){
+		$(document).on('click', '#' + BTN_START_ID, function(e){
 			e.preventDefault();
 			
 			// Open first question
 			openQuestion(first);
 		});
 	
-		// Event: Move on to the next question
-		$(document).on('click', '#quiz_prev', function(e){
+		// Event: Move on to the prev question
+		$(document).on('click', '#' + BTN_PREV_ID, function(e){
 			e.preventDefault();
 			
 			// Question ID
 			var question = $(this).data('quizId');
 			
-			// If question ID is less than zero...
+			// If 'question ID' is less than zero...
 			if((question - 1) < 0){
 				
 				// Open first question or intro
 				openFirst();
-			} else{
+			} 
+			
+			// Else...
+			else{
 				
 				// Open previous question
 				openQuestion(question - 1);
@@ -155,7 +189,7 @@
 		});
 		
 		// Event: Move on to the next question
-		$(document).on('click', '#quiz_next', function(e){
+		$(document).on('click', '#' + BTN_NEXT_ID, function(e){
 			e.preventDefault();
 			
 			// Question ID
@@ -170,7 +204,7 @@
 		});
 		
 		// Event: Show results
-		$(document).on('click', '#quiz_results', function(e){
+		$(document).on('click', '#' + BTN_RESULTS_ID, function(e){
 			e.preventDefault();
 			
 			// Question ID
@@ -185,11 +219,11 @@
 		});
 		
 		// Event: Start over from the beginning
-		$(document).on('click', '#quiz_restart, #quiz_restart_modal', function(e){
+		$(document).on('click', '#' + BTN_RESTART_ID + ', #' + BTN_RESTART_MDL_ID, function(e){
 			e.preventDefault();
 			
 			// Empty cookie response
-			response = {};
+			var response = {};
 			setCookie('response', JSON.stringify(response), settings.cookieExpire);
 			
 			// Open first question or intro
@@ -212,7 +246,8 @@
 			
 			// If step is an integer...
 			if(/^\+?(0|[1-9]\d*)$/.test(stepid)){
-			
+				
+				// If actual hash is disegual to step ID
 				if(parseInt(hashActual) != parseInt(stepid)){
 					
 					// Open question
@@ -220,7 +255,7 @@
 				}
 			} 
 			
-			// If step is results...
+			// If step ID is equal to results...
 			else if(stepid == 'results'){
 				
 				// Open results
@@ -248,17 +283,17 @@
 			}
 			
 			// Append quiz container
-			$('<div id="' + quiz + '"></div>').appendTo(container);
+			$('<div id="' + QUIZ_ID + '"></div>').appendTo(CONTAINER);
 			
 			// Append progress bar container
-			$('<div id="' + progress + '"></div>').appendTo(container)
-				.addClass('quiz_progress');
+			$('<div id="' + PROGRESS_ID + '"></div>').appendTo(CONTAINER)
+				.addClass(PROGRESS_CLASS);
 			
 			// Get quiz json file via ajax
 			$.getJSON(settings.quizJson + '?_=' + new Date().getTime())
 				.done(function(data, textStatus, jqXHR){
 					
-					// Qyestions
+					// Questions
 					quizJson = data[0].questions;
 					
 					// Params
@@ -286,7 +321,10 @@
 							// Open results
 							openResults();
 						}
-					} else{
+					} 
+					
+					// Else...
+					else{
 						
 						// Open first question or intro
 						openFirst();					
@@ -306,6 +344,8 @@
 			
 			// Get html
 			var html = htmlFirst();
+			
+			// If is set html...
 			if(html){
 				
 				// Unset actual hash
@@ -313,7 +353,7 @@
 				window.location.hash = '';
 				
 				// Insert html into quiz container
-				$('#' + quiz).html(html);
+				$('#' + QUIZ_ID).html(html);
 				
 				// Unset progress bar
 				showProgress(false);
@@ -326,6 +366,7 @@
 			// Get question from quiz json
 			var question = getQuestion(id);
 			
+			// If 'question' is set...
 			if(question){
 				
 				// Question ID
@@ -336,7 +377,7 @@
 				window.location.hash = 'step=' + id;
 				
 				// Insert html into quiz container
-				$('#' + quiz).html(htmlQuestion(question));
+				$('#' + QUIZ_ID).html(htmlQuestion(question));
 				
 				// Set progress bar
 				showProgress(id);
@@ -351,15 +392,16 @@
 			window.location.hash = 'step=results';
 			
 			// Insert html into quiz container
-			$('#' + quiz).html(htmlResults());
+			$('#' + QUIZ_ID).html(htmlResults());
 			
 			// Unset progress bar
 			showProgress(false);
 			
-			// Call onResult function
+			// If 'onResults' is a function...
 			if(typeof settings.onResults === 'function'){
 				
-				settings.onResults.apply($('#' + quiz), [good, step]);
+				// Call onResult function
+				settings.onResults.apply($('#' + QUIZ_ID), [good, step]);
 			}
 		}
 	
@@ -404,7 +446,7 @@
 				
 				questionId = 'question' + i;
 				
-				// Previous question with no answer
+				// If previous question is without answer...
 				if(i < id && !response[questionId]){
 					
 					// Open modal
@@ -414,7 +456,7 @@
 					return false;
 				} 
 				
-				// Current question with no answer
+				// If current question is without answer...
 				else if(i == id && !response[questionId]){
 					
 					// Open modal
@@ -449,19 +491,23 @@
 		// Function: Get html of first question or intro
 		function htmlFirst(){
 			
-			var items = [];
-			
 			// If the intro is set in the json... 
 			if(params.intro == 1){
 				
 				// An intro message is displayed
-				items.push('<div class="quiz_intro">');
-				items.push(params.intromessage);
-				items.push('<button id="quiz_start" class="quiz_btn">' + messages.start + '<i class="fa fa-play" aria-hidden="true"></i></button>');
-				items.push('</div>');
+				var html = '<div class="' + INTRO_CLASS + '">' 
+					+ params.intromessage 
+					+ '<button id="' + BTN_START_ID + '" class="' + BTN_START_CLASS + '">' 
+					+ messages.start 
+					+ PLAY_ICO 
+					+ '</button>' 
+					+ '</div>';
 			
-				return items.join('');
-			} else{
+				return html;
+			} 
+			
+			// Else...
+			else{
 				
 				// Open first question
 				openQuestion(first);
@@ -471,27 +517,31 @@
 		// Function: Get html of a question
 		function htmlQuestion(q){	
 			
-			var items = [];
-			
 			var questionId = 'question' + q[0];
 			
 			// Get cookie response
 			var response = JSON.parse(getCookie('response'));
 			
-			items.push('<div class="quiz_flex">');
+			var html = '<div class="' + FLEX_CLASS + '">';
 			
 			// Question number
-			items.push('<div class="quiz_num">' + (q[0] + 1) + '.</div>');
+			html += '<div class="' + NUM_CLASS + '">' 
+				+ (q[0] + 1) 
+				+ '.</div>';
 			
-			items.push('<div class="quiz_flex-fill">');
+			html += '<div class="' + FLEXFILL_CLASS + '">';
 			
 			// Question text
-			items.push('<h2>' + q[1].question + '</h2>');
+			html += '<h2>' 
+				+ q[1].question 
+				+ '</h2>';
 			
 			// Question description
 			if(q[1].description){
 				
-				items.push('<p>' + q[1].description + '</p>');
+				html += '<p>' 
+					+ q[1].description 
+					+ '</p>';
 			}
 			
 			// Answers
@@ -506,39 +556,60 @@
 				}
 				
 				// Input and Label
-				items.push('<div class="quiz_radio-button">');
-				items.push('<input type="radio" id="quiz_answer-' + i + '" name="question' + q[0] + '" value="' + i + '"' + checked + '>');
-				items.push('<label for="quiz_answer-' + i + '"><span></span> ' + r.answer + '</label>');
-				items.push('</div>');
+				html += '<div class="' + RADIO_CLASS + '">' 
+					+ '<input type="radio" id="' + ANSWER_ID + '-' + i + '" ' 
+					+ 'name="question' + q[0] + '" ' 
+					+ 'value="' + i + '" ' 
+					+ 'data-quiz-name="question' + q[0] + '" ' 
+					+ 'data-quiz-value="' + i + '"' + checked + '>' 
+					+ '<label for="' + ANSWER_ID + '-' + i + '"><span></span> ' 
+					+ r.answer 
+					+ '</label>' 
+					+ '</div>';
 			});
 		
-			items.push('</div>');
-			items.push('</div>');
+			html += '</div>';
+			html += '</div>';
 			
 			// If it is the last question...
 			if(hasLast(q[0])){
 				
 				// Prev and Results buttons
-				items.push('<div class="quiz_btn-group" role="group">');
-				items.push('<button id="quiz_prev" class="quiz_btn" data-quiz-id="' + q[0] + '"><i class="fa fa-step-backward" aria-hidden="true"></i>' + messages.prev + '</button>');
-				items.push('<button id="quiz_results" class="quiz_btn" data-quiz-id="' + q[0] + '">' + messages.results + '<i class="fa fa-step-forward" aria-hidden="true"></i></button>');
-				items.push('</div>');
-			} else{
+				html += '<div class="' + BTN_GROUP_CLASS + '" role="group">' 
+					+ '<button id="' + BTN_PREV_ID + '" class="' + BTN_CLASS + '" data-quiz-id="' + q[0] + '">' 
+					+ BACKWARD_ICO 
+					+ messages.prev 
+					+ '</button>' 
+					+ '<button id="' + BTN_RESULTS_ID + '" class="' + BTN_CLASS + '" data-quiz-id="' + q[0] + '">' 
+					+ messages.results 
+					+ FORWARD_ICO 
+					+ '</button>' 
+					+ '</div>';
+			} 
+			
+			// Else if...
+			else{
 				
 				// Prev and Next buttons
-				items.push('<div class="quiz_btn-group" role="group">');
-				items.push('<button id="quiz_prev" class="quiz_btn" data-quiz-id="' + q[0] + '"><i class="fa fa-step-backward" aria-hidden="true"></i>' + messages.prev + '</button>');
-				items.push('<button id="quiz_next" class="quiz_btn" data-quiz-id="' + q[0] + '">' + messages.next + '<i class="fa fa-step-forward" aria-hidden="true"></i></button>');
-				items.push('</div>');
+				html += '<div class="' + BTN_GROUP_CLASS + '" role="group">' 
+					+ '<button id="' + BTN_PREV_ID + '" class="' + BTN_CLASS + '" data-quiz-id="' + q[0] + '">' 
+					+ BACKWARD_ICO 
+					+ messages.prev 
+					+ '</button>' 
+					+ '<button id="' + BTN_NEXT_ID + '" class="' + BTN_CLASS + '" data-quiz-id="' + q[0] + '">' 
+					+ messages.next 
+					+ FORWARD_ICO 
+					+ '</button>' 
+					+ '</div>';
 			}
 			
-			return items.join('');
+			return html;
 		}
 	
 		// Function: Get html of results
 		function htmlResults(){
 			
-			var items = [];
+			var html = '';
 			
 			// Reset good response
 			good = 0;
@@ -551,20 +622,26 @@
 	
 				var questionId = 'question' + i;
 				
-				items.push('<div class="quiz_flex">');
+				html += '<div class="' + FLEX_CLASS + '">';
 				
 				// Question number
-				items.push('<div class="quiz_num">' + (i + 1) + '.</div>');
+				html += '<div class="' + NUM_CLASS + '">' 
+					+ (i + 1) 
+					+ '.</div>';
 				
-				items.push('<div class="quiz_flex-fill">');
+				html += '<div class="' + FLEXFILL_CLASS + '">';
 				
 				// Question text
-				items.push('<h2>' + q.question + '</h2>');
+				html += '<h2>' 
+					+ q.question 
+					+ '</h2>';
 				
 				// Question description
 				if(q.description){
 					
-					items.push('<p>' + q.description + '</p>');
+					html += '<p>' 
+						+ q.description 
+						+ '</p>';
 				}
 				
 				// Answers
@@ -580,32 +657,46 @@
 							good++;
 							
 							// Alert success
-							items.push('<div class="quiz_response"><strong>' + (i + 1) + '.</strong> ' + r.answer + '</div>');
-							items.push('<div class="quiz_alert quiz_alert-success">');
-							items.push('<i class="fa fa-thumbs-up" aria-hidden="true"></i>' + r.alert);
-							items.push('</div>');
-						} else{
+							html += '<div class="' + RESPONSE_CLASS + '"><strong>' 
+								+ (i + 1) 
+								+ '.</strong> ' 
+								+ r.answer 
+								+ '</div>' 
+								+ '<div class="' + ALERT_CLASS + ' ' + SUCCESS_CLASS + '">' 
+								+ THUMBSUP_ICO 
+								+ r.alert 
+								+ '</div>';
+						} 
+						
+						// Else if is wrong...
+						else{
 							
 							// Alert fail
-							items.push('<div class="quiz_response"><strong>' + (i + 1) + '.</strong> ' + r.answer + '</div>');
-							items.push('<div class="quiz_alert quiz_alert-fail">');
-							items.push('<i class="fa fa-thumbs-down" aria-hidden="true"></i>' + r.alert);
-							items.push('</div>');
+							html += '<div class="' + RESPONSE_CLASS + '"><strong>' 
+								+ (i + 1) 
+								+ '.</strong> ' 
+								+ r.answer 
+								+ '</div>' 
+								+ '<div class="' + ALERT_CLASS + ' ' + FAIL_CLASS + '">' 
+								+ THUMBSDOWN_ICO 
+								+ r.alert 
+								+ '</div>';
 						}
-					} else{
-						
-						//items.push('<div class="quiz_response"><strong>' + (i + 1) + '.</strong> ' + r.answer + '</div>');
 					}
 				});
 				
-				items.push('</div>');
-				items.push('</div>');
+				html += '</div>';
+				html += '</div>';
 			});
 			
 			// Restart button
-			items.push('<button id="quiz_restart" class="quiz_btn"><i class="fa fa-repeat" aria-hidden="true"></i>' + messages.restart + '</button>');
+			html += '<button id="' + BTN_RESTART_ID + '" ' 
+				+ 'class="' + BTN_CLASS + '">' 
+				+ REPEAT_ICO 
+				+ messages.restart 
+				+ '</button>';
 			
-			return items.join('');
+			return html;
 		}	
 		
 		// Function: Set progress bar, if it doesn't exists, and show/hide it
@@ -615,15 +706,15 @@
 			var perc = (id / step) * 100;
 			
 			// Search for progress bar
-			var bar = $('#' + progress).show()
-				.find('.quiz_progress-bar');
+			var bar = $('#' + PROGRESS_ID).show()
+				.find('.' + PROGRESSBAR_CLASS);
 			
-			// if no progress bar exist...
+			// If no progress bar exist...
 			if(!bar.length){
 				
 				// Append progress bar to progress container
-				bar = $('<div class="quiz_progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>')
-					.appendTo('#' + progress);
+				bar = $('<div class="' + PROGRESSBAR_CLASS + '" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>')
+					.appendTo('#' + PROGRESS_ID);
 			}
 			
 			// Set width and counter
@@ -631,47 +722,51 @@
 				.css('width', perc + '%')
 				.html(id + '/' + step);
 			
-			// If id is false...
+			// If 'id' is false...
 			if(!id){
 				
 				// Hide progress bar
-				$('#' + progress).hide();
+				$('#' + PROGRESS_ID).hide();
 			}
 		}
 		
 		// Function: Set bootstrap modal, if it doesn't exists, and show it
 		function showModal(error, back){
 			
-			var mdl = $('#' + modal);
+			var mdl = $('#' + MODAL_ID);
 			
-			// If modal html doesn't exist, append one to body
+			// If modal html doesn't exist...
 			if(!mdl.length){
 	
-				var items = [];
-				
-				items.push('<div id="' + modal + '" class="modal fade" role="dialog" aria-hidden="true" aria-labelledby="quiz_mdltitle" tabindex="-1">');
-				items.push('<div class="modal-dialog modal-dialog-centered" role="document">');
-				items.push('<div class="modal-content">');
+				// Append modal to body
+				var html = '<div id="' + MODAL_ID + '" class="modal fade" role="dialog" aria-hidden="true" aria-labelledby="quiz_mdltitle" tabindex="-1">' 
+					+ '<div class="modal-dialog modal-dialog-centered" role="document">' 
+					 + '<div class="modal-content">';
 				
 				// Header
-				items.push('<div class="modal-header">');
-				items.push('<h5 id="quiz_mdltitle" class="modal-title">' + messages.error + '</h5>');
-				items.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-				items.push('</div>');
+				html += '<div class="modal-header">' 
+					+ '<h5 id="' + MODAL_TITLE_ID + '" class="modal-title">' 
+					+ messages.error 
+					+ '</h5>' 
+					+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' 
+					+ '</div>';
 				
 				// Body
-				items.push('<div class="modal-body text-danger" aria-live="polite"></div>');
+				html += '<div class="modal-body text-danger" aria-live="polite"></div>';
 				
 				// Footer
-				items.push('<div class="modal-footer">');
-				items.push('<button id="quiz_restart_modal" type="button" class="quiz_btn" data-dismiss="modal"><i class="fa fa-repeat" aria-hidden="true"></i>' + messages.restart + '</button>');
-				items.push('</div>');
+				html += '<div class="modal-footer">' 
+					+ '<button id="' + BTN_RESTART_MDL_ID + '" type="button" class="' + BTN_CLASS + '" data-dismiss="modal">' 
+					+ REPEAT_ICO 
+					+ messages.restart 
+					+ '</button>' 
+					+ '</div>';
 				
-				items.push('</div>');
-				items.push('</div>');
-				items.push('</div>');
+				html += '</div>';
+				html += '</div>';
+				html += '</div>';
 				
-				$(items.join(''))
+				$(html)
 					.appendTo('body');
 				
 				// Wait ten millisecond before to open modal 
@@ -679,7 +774,10 @@
 					
 					showModal(error, back);
 				}, 10);
-			} else{
+			} 
+			
+			// Else...
+			else{
 				
 				// Set error message and footer button, then open modal
 				mdl.find('.modal-body').text(error)
@@ -695,9 +793,10 @@
 			
 			var expires = '';
 			
-			// Set cookie expiring date
+			// If seconds is set...
 			if(seconds){
 				
+				// Set cookie expiring date
 				var date = new Date();
 				date.setTime(date.getTime() + (seconds * 1000));
 				expires = '; expires=' + date.toUTCString();
