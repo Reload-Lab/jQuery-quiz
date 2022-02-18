@@ -17,18 +17,23 @@ $(function () {
     $('#quiz_container').quiz('/web/path/to/file.json');
 });
 ```
+
 ## Available Options
 |  Options | Type  | Descryption |
 | ------------ | ------------ | ------------ |
 | **quizJson**  | *String*  | Web url al file JSON.  |
 | **cookieExpire**  | *Integer*  | Durata del cookie che registra le risposte. Default: 3600  |
 | **onResults**  |  *Function* | Funzione che viene eseguita quando vengono mostrati i risultati del test. Può essere utilizzata per dare un giudizio sul punteggio ottenuto sulla base delle percentuale di risposte giuste. Passa due parametri: *good* (numero di domande giuste) e *total* (numero totale delle domande)  |
+
 ## Adding HTML to Questions and Answers
 Standard HTML elements like images, videos embeds, headers, paragraphs, etc., can be used within text values like question and a answer.
 
+```json
 "question": "The Question? <img src='path/to/image.png' />",
 "answers": [
-    {"answer": "an <b>incorrect</b> answer", "correct": false},
-    {"answer": "a <b>correct</b> answer",    "correct": true},
+    {"answer": "an <b>incorrect</b> answer"},
+    {"answer": "a <b>correct</b> answer"},
 ]
+```
+
 Created by Domenico Gigante - [Reload Laboratorio Multimediale](https://www.reloadlab.it "Reload Laboratorio Multimediale"), Rome, IT
