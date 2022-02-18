@@ -1,6 +1,6 @@
 # jQuery-quiz
-[![GitHub Release](https://img.shields.io/github/release/qubyte/rubidium.svg?style=flat-square)](https://github.com/Reload-Lab/jQuery-quiz/releases)
-[![GitHub License](https://img.shields.io/github/license/prasathmani/tinyfilemanager.svg?style=flat-square)](https://github.com/Reload-Lab/jQuery-quiz/blob/main/LICENSE)
+[![GitHub Release](https://img.shields.io/badge/release-1.0-green)](https://github.com/Reload-Lab/jQuery-quiz/releases)
+[![GitHub License](https://img.shields.io/badge/license-MIT-orange)](https://github.com/Reload-Lab/jQuery-quiz/blob/main/LICENSE)
 
 Jquery-quiz consente di creare un quiz, utilizzando un file JSON che contiene tutte le informazioni necessarie. Il file JSON viene caricato via AJAX quando il plugin viene inizializzato.
 Le risposte vengono salvate in un cookie e il quiz è interamente navigabile attraverso gli hash nella url.
