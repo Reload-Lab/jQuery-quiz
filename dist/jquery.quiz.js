@@ -30,8 +30,8 @@
 	}
 	
 	// Plugin
-	$.quiz = $.fn.quiz = function(options){
-		
+	$.quiz = $.fn.quiz = function(options)
+	{
 		// Internal variables
 		var quizJson,
 			settings = {},
@@ -79,7 +79,8 @@
 		var defaults = {
 			quizJson: null,
 			cookieExpire: 3600,
-			onResults: function(good, total){
+			onResults: function(good, total)
+			{
 				
 				// Perform some operations to show a message about the results
 			}
@@ -89,8 +90,8 @@
 		var methods = {
 			
 			// Localization of messages
-			localization: function(translation){
-				
+			localization: function(translation)
+			{
 				// If 'translation' is an Object...
 				if(typeof translation == 'object'){
 					
@@ -139,8 +140,8 @@
 		
 		/*** EVENTS ***/
 		// Event: Record response
-		$(document).on('click', '*[data-quiz-value]', function(e){
-			
+		$(document).on('click', '*[data-quiz-value]', function(e)
+		{
 			// Get cookie response
 			var response = JSON.parse(getCookie('response'));
 			
@@ -159,7 +160,8 @@
 		});
 		
 		// Event: Start the quiz
-		$(document).on('click', '#' + BTN_START_ID, function(e){
+		$(document).on('click', '#' + BTN_START_ID, function(e)
+		{
 			e.preventDefault();
 			
 			// Open first question
@@ -167,7 +169,8 @@
 		});
 	
 		// Event: Move on to the prev question
-		$(document).on('click', '#' + BTN_PREV_ID, function(e){
+		$(document).on('click', '#' + BTN_PREV_ID, function(e)
+		{
 			e.preventDefault();
 			
 			// Question ID
@@ -189,7 +192,8 @@
 		});
 		
 		// Event: Move on to the next question
-		$(document).on('click', '#' + BTN_NEXT_ID, function(e){
+		$(document).on('click', '#' + BTN_NEXT_ID, function(e)
+		{
 			e.preventDefault();
 			
 			// Question ID
@@ -204,7 +208,8 @@
 		});
 		
 		// Event: Show results
-		$(document).on('click', '#' + BTN_RESULTS_ID, function(e){
+		$(document).on('click', '#' + BTN_RESULTS_ID, function(e)
+		{
 			e.preventDefault();
 			
 			// Question ID
@@ -219,7 +224,8 @@
 		});
 		
 		// Event: Start over from the beginning
-		$(document).on('click', '#' + BTN_RESTART_ID + ', #' + BTN_RESTART_MDL_ID, function(e){
+		$(document).on('click', '#' + BTN_RESTART_ID + ', #' + BTN_RESTART_MDL_ID, function(e)
+		{
 			e.preventDefault();
 			
 			// Empty cookie response
@@ -231,8 +237,8 @@
 		});		 		
 	
 		// Event: Intercept hash change
-		$(window).bind('hashchange', function(e){
-			
+		$(window).bind('hashchange', function(e)
+		{
 			// If hash is empty...
 			if(window.location.hash == ''){
 				
@@ -266,8 +272,8 @@
 		
 		/*** FUNCTIONS ***/
 		// Function: Set up the quiz
-		function init(){
-			
+		function init()
+		{
 			// Bootstrap 4 is required
 			if(!$(document).modal){
 				
@@ -291,8 +297,8 @@
 			
 			// Get quiz json file via ajax
 			$.getJSON(settings.quizJson + '?_=' + new Date().getTime())
-				.done(function(data, textStatus, jqXHR){
-					
+				.done(function(data, textStatus, jqXHR)
+				{
 					// Questions
 					quizJson = data[0].questions;
 					
@@ -330,8 +336,8 @@
 						openFirst();					
 					}
 				})
-				.fail(function(jqXHR, textStatus, errorThrown){
-					
+				.fail(function(jqXHR, textStatus, errorThrown)
+				{
 					// Ajax error
 					console.error('Fail');
 					console.error('Error ' + textStatus);
@@ -340,8 +346,8 @@
 		}
 		
 		// Function: Open first question or intro
-		function openFirst(){
-			
+		function openFirst()
+		{
 			// Get html
 			var html = htmlFirst();
 			
@@ -361,8 +367,8 @@
 		}
 		
 		// Function: Open a question
-		function openQuestion(id){
-			
+		function openQuestion(id)
+		{
 			// Get question from quiz json
 			var question = getQuestion(id);
 			
@@ -385,8 +391,8 @@
 		}
 		
 		// Function: Open results
-		function openResults(id){
-			
+		function openResults(id)
+		{
 			// Set actual hash
 			hashActual = 'results';
 			window.location.hash = 'step=results';
@@ -406,13 +412,13 @@
 		}
 	
 		// Function: Returns a question starting from the id
-		function getQuestion(id){
-			
+		function getQuestion(id)
+		{
 			var question;
 			
 			// Search for question
-			$.each(quizJson, function(i, q){
-				
+			$.each(quizJson, function(i, q)
+			{
 				// If question key is equal to id...
 				if(i == id){
 					
@@ -425,8 +431,8 @@
 		}
 		
 		// Function: Check for unanswered questions
-		function hasErrors(id){
-			
+		function hasErrors(id)
+		{
 			// Get cookie response
 			var response = JSON.parse(getCookie('response'));
 			
@@ -442,8 +448,8 @@
 			}
 			
 			// Search for unanswered questions
-			$.each(quizJson, function(i, q){
-				
+			$.each(quizJson, function(i, q)
+			{
 				questionId = 'question' + i;
 				
 				// If previous question is without answer...
@@ -471,13 +477,13 @@
 		}
 	
 		// Function: Check if it is the last question
-		function hasLast(id){
-			
+		function hasLast(id)
+		{
 			var lastquestion = true;
 			
 			// Search for question
-			$.each(quizJson, function(i, q){
-				
+			$.each(quizJson, function(i, q)
+			{
 				// If question key is greater than id...
 				if(i > id){
 					
@@ -489,8 +495,8 @@
 		}
 		
 		// Function: Get html of first question or intro
-		function htmlFirst(){
-			
+		function htmlFirst()
+		{
 			// If the intro is set in the json... 
 			if(params.intro == 1){
 				
@@ -515,8 +521,8 @@
 		}
 		
 		// Function: Get html of a question
-		function htmlQuestion(q){	
-			
+		function htmlQuestion(q)
+		{	
 			var questionId = 'question' + q[0];
 			
 			// Get cookie response
@@ -545,8 +551,8 @@
 			}
 			
 			// Answers
-			$.each(q[1].answers, function(i, r){
-				
+			$.each(q[1].answers, function(i, r)
+			{
 				var checked = '';
 				
 				// If an answer has already been chosen for the question...
@@ -607,8 +613,8 @@
 		}
 	
 		// Function: Get html of results
-		function htmlResults(){
-			
+		function htmlResults()
+		{
 			var html = '';
 			
 			// Reset good response
@@ -618,8 +624,8 @@
 			var response = JSON.parse(getCookie('response'));
 			
 			// Search for question
-			$.each(quizJson, function(i, q){
-	
+			$.each(quizJson, function(i, q)
+			{
 				var questionId = 'question' + i;
 				
 				html += '<div class="' + FLEX_CLASS + '">';
@@ -645,8 +651,8 @@
 				}
 				
 				// Answers
-				$.each(q.answers, function(i, r){
-					
+				$.each(q.answers, function(i, r)
+				{
 					// If an answer has already been chosen for the question...
 					if(response && response[questionId] && response[questionId] == i){
 						
@@ -700,8 +706,8 @@
 		}	
 		
 		// Function: Set progress bar, if it doesn't exists, and show/hide it
-		function showProgress(id){
-			
+		function showProgress(id)
+		{
 			// Width of bar
 			var perc = (id / step) * 100;
 			
@@ -731,8 +737,8 @@
 		}
 		
 		// Function: Set bootstrap modal, if it doesn't exists, and show it
-		function showModal(error, back){
-			
+		function showModal(error, back)
+		{
 			var mdl = $('#' + MODAL_ID);
 			
 			// If modal html doesn't exist...
@@ -770,8 +776,8 @@
 					.appendTo('body');
 				
 				// Wait ten millisecond before to open modal 
-				setTimeout(function(){
-					
+				setTimeout(function()
+				{
 					showModal(error, back);
 				}, 10);
 			} 
@@ -789,8 +795,8 @@
 	
 		/*** COOKIE ***/
 		// Set a cookie
-		function setCookie(name, value, seconds){
-			
+		function setCookie(name, value, seconds)
+		{
 			var expires = '';
 			
 			// If seconds is set...
@@ -806,8 +812,8 @@
 		}
 		
 		// Get a cookie
-		function getCookie(name){
-			
+		function getCookie(name)
+		{
 			var nameEQ = name + '=';
 			var ca = document.cookie.split(';');
 			
@@ -830,8 +836,8 @@
 		}
 		
 		// Delete a cookie
-		function eraseCookie(name){
-			   
+		function eraseCookie(name)
+		{
 			document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 		}
 		
