@@ -61,7 +61,7 @@ $(document).ready(function(){
 			var perc = good / total;
 			
 			var alert = $('<div class="alert"></div>')
-				.prependTo(this);
+				.prependTo($(this).find('#quiz_body'));
 			
 			if(perc == 0){
 				

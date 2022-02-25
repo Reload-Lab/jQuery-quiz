@@ -1,8 +1,7 @@
 [{
-	"params": {
+	"intro": {
 		"title": "Geography Quiz",
-		"intro": 1,
-		"intromessage": "Test your geography knowledge with this capital cities quiz"
+		"description": "Test your geography knowledge with this capital cities quiz"
 	},
 	"questions": [{
 		"question": "Budapest is the capital of which state?",
@@ -33,7 +32,7 @@
 		},
 		{
 			"answer": "Buenos Aires",
-			"alert": "",
+			"alert": "<strong>Correct!</strong>",
 			"true": 1
 		},
 		{
