@@ -13,7 +13,7 @@
 	color: #006ba1;
 	line-height: 1.2;
 }
-.quiz_flex-fill {
+.quiz_flexfill {
 	flex: 1 1 auto;
 }
 .quiz_flex h2 {
@@ -23,14 +23,22 @@
 	color: #006ba1;
 	line-height: 1.2;
 }
+.quiz_intro h2 {
+	margin: 0 0 .75rem 0;
+	font-size: 2rem;
+	font-weight: 700;
+	color: #006ba1;
+	line-height: 1.2;
+}
+.quiz_intro p {
+	font-size: 1.25rem;
+}
 
 /* Quiz intro */
-.quiz_intro {
+.step_intro {
 	padding: 1.5rem;
 	border: .125rem solid #006ba1;
 	border-radius: .25rem;
-	font-size: 1.5rem;
-	font-weight: 500;
 }
 
 /* Results */
@@ -48,28 +56,28 @@
 .quiz_alert i {
 	margin-right: .75rem;
 }
-.quiz_alert-success {
+.quiz_success {
 	color: #155724;
 	background-color: #d4edda;
 	border-color: #c3e6cb;
 }
-.quiz_alert-success a {
+.quiz_success a {
 	color: #0b2e13;
 }
-.quiz_alert-fail {
+.quiz_fail {
 	color: #721c24;
 	background-color: #f8d7da;
 	border-color: #f5c6cb;
 }
-.quiz_alert-fail a {
+.quiz_fail a {
 	color: #491217;
 }
 
 /* Radio button */
-.quiz_radio-button {
+.quiz_radiogroup {
 	margin-top: 2rem;
 }
-.quiz_radio-button input[type="radio"] {
+.quiz_radiogroup input[type="radio"] {
 	position: absolute;
 	left: 0;
 	z-index: -1;
@@ -80,13 +88,13 @@
 	padding: 0;
 	overflow: visible;
 }
-.quiz_radio-button input[type="radio"] + label {
+.quiz_radiogroup input[type="radio"] + label {
 	display: inline-block;
 	margin: 0;
 	font-size: 1.25rem;
 	line-height: 2rem;
 }
-.quiz_radio-button input[type="radio"] + label span {
+.quiz_radiogroup input[type="radio"] + label span {
 	display: inline-block;
 	width: 2rem;
 	height: 2rem;
@@ -99,7 +107,7 @@
 	vertical-align: middle;
 	cursor: pointer;
 }
-.quiz_radio-button input[type="radio"]:checked + label span {
+.quiz_radiogroup input[type="radio"]:checked + label span {
 	background: #006ba1 url("https://www.positronx.io/wp-content/uploads/2019/06/tick-icon-4657-01.png") center center no-repeat;
 }
 
@@ -129,63 +137,57 @@
 	background: #fff;
 	color: #006ba1;
 }
-.quiz_btn-group {
+#quiz-buttons {
 	position: relative;
 	display: -ms-inline-flexbox;
 	display: inline-flex;
 	vertical-align: middle;
 	width: 100%;
 }
-.quiz_btn-group > .quiz_btn {
+#quiz-buttons > .quiz_btn {
 	position: relative;
 	-ms-flex: 1 1 auto;
 	flex: 1 1 auto;
 }
-.quiz_btn-group > .quiz_btn:hover {
+#quiz-buttons > .quiz_btn:hover {
 	z-index: 1;
 }
-.quiz_btn-group > .quiz_btn:not(:first-child) {
+#quiz-buttons > .quiz_btn:not(:first-child) {
 	margin-left: -1px;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 }
-.quiz_btn-group > .quiz_btn:not(:last-child) {
+#quiz-buttons > .quiz_btn:not(:last-child) {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
-#quiz_start, 
-#quiz_prev, 
-#quiz_next, 
-#quiz_results, 
-#quiz_restart, 
-#quiz_restart_modal {
+.quiz_btn {
 	margin-top: 2rem;
 }
-#quiz_start, 
-#quiz_restart, 
-#quiz_restart_modal {
+.step_intro #quiz-buttons,
+.step_results #quiz-buttons {
+	display: block;
+}
+.step_intro .quiz_btn, 
+.step_results .quiz_btn, 
+.modal-footer .quiz_btn {
 	display: block;
 	width: 100%;
 }
-#quiz_start, 
-#quiz_restart {
+.step_intro .quiz_btn, 
+.step_results .quiz_btn {
 	width: 50%;
 	margin-left: auto;
 	margin-right: auto;
 }
-#quiz_start i, 
-#quiz_prev i, 
-#quiz_next i, 
-#quiz_results i, 
-#quiz_restart i, 
-#quiz_restart_modal i {
+.quiz_btn i {
 	margin-left: .75rem;
 	margin-right: .75rem;
 	font-size: 1.25rem;
 }
 
 /* Progress bar */
-.quiz_progress {
+#quiz-progress {
 	display: -ms-flexbox;
 	display: flex;
 	height: 1.75rem;
@@ -196,7 +198,11 @@
 	background-color: #e9ecef;
 	border-radius: 0.25rem;
 }
-.quiz_progress-bar {
+.step_intro #quiz-progress, 
+.step_results #quiz-progress {
+	display: none;
+}
+.quiz_progressbar {
 	display: -ms-flexbox;
 	display: flex;
 	-ms-flex-direction: column;
@@ -212,17 +218,17 @@
 }
 
 /* Modal */
-#quiz_modal .modal-header {
+#quiz-modal .modal-header {
 	background-color: #006ba1;
 	color: #fff;
 }
-#quiz_modal .close {
+#quiz-modal .close {
     color: #fff;
     text-shadow: 0 1px 0 #000;
 }
-#quiz_modal .close:hover {
+#quiz-modal .close:hover {
     color: #fff;
 }
-#quiz_modal .modal-body {
+#quiz-modal .modal-body {
 	font-size: 1.25rem;	
 }
