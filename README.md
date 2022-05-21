@@ -17,7 +17,7 @@ Yarn
 `yarn add jquery- quiz`
 
 Bower
-`bower install Reload-Lab/ jQuery-quiz`
+`bower install Reload-Lab/jQuery-quiz`
 
 ### Example And Usage
 To understand how the plugin works you can take a look at the contents of the *example/* directory. In particular to the **quiz.json** file, which is the quiz data file.
