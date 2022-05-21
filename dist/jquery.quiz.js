@@ -12,7 +12,7 @@
  
 (function($){
 	
-	var version = '2.1.0';
+	var version = '2.0.0';
 	
 	// Customizable texts according to the language
 	// (buttons, labels and error messages)
