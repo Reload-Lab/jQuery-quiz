@@ -41,8 +41,11 @@ body {
 .main {
 	background: url("img/general-background.jpg");
 }
-#contenuto {
-	padding: 5% 5% 10% 5%;
+#quiz_container {
+	padding: 5%;
+}
+.code_example {
+	padding-bottom: 10%;
 }
 @media (max-width: 767.98px) {
 .header h1.titolo {

@@ -3,16 +3,16 @@
  * https://github.com/Reload-Lab/jQuery-quiz
  *
  * @updated February 25, 2022
- * @version 2.0
+ * @version 2.1.0
  *
- * @author Domenico Gigante - domenico.gigante@reloadlab.it
- * @copyright (c) 2022 Reload Laboratorio Multimediale - httpa://www.reloadlab.it
+ * @author Domenico Gigante <domenico.gigante@reloadlab.it>
+ * @copyright (c) 2022 Reload Laboratorio Multimediale <info@reloadlab.it> (httpa://www.reloadlab.it)
  * @license MIT
  */
  
 (function($){
 	
-	var version = 2.0;
+	var version = '2.1.0';
 	
 	// Customizable texts according to the language
 	// (buttons, labels and error messages)
@@ -30,10 +30,10 @@
 	}
 	
 	// Plugin
-	$.quiz = $.fn.quiz = function(options){
-		
+	$.quiz = $.fn.quiz = function(options)
+	{
 		// Internal variables
-		var quizJson,
+		var quizArr,
 			settings = {},
 			intro,
 			steps = 0,
@@ -44,13 +44,16 @@
 		// Visual variable
 		var CONTAINER = typeof this == 'object'? this.first(): null,
 			DIV = '<div>',
-
+			
+			// Elements ID
 			QUIZ_ID = 'quiz-container',
 			BODY_ID = 'quiz-body',
 			BUTTONS_ID = 'quiz-buttons',
 			PROGRESS_ID = 'quiz-progress',
 			MODAL_ID = 'quiz-modal',
-
+			COOKIE_ID = 'quiz_responses',
+			
+			// Elements CSS CLASS
 			FLEX_CLASS = 'quiz_flex',
 			FLEXFILL_CLASS = 'quiz_flexfill',
 			NUM_CLASS = 'quiz_num',
@@ -58,7 +61,8 @@
 			BTN_CLASS = 'quiz_btn',
 			RESPONSE_CLASS = 'quiz_response',
 			PROGRESSBAR_CLASS = 'quiz_progressbar',
-
+			
+			// Buttons icons
 			PLAY_ICO = '<i class="fa fa-play" aria-hidden="true"></i>',
 			BACKWARD_ICO = '<i class="fa fa-step-backward" aria-hidden="true"></i>',
 			FORWARD_ICO = '<i class="fa fa-step-forward" aria-hidden="true"></i>',
@@ -74,15 +78,18 @@
 			hideRestartBtn: false,
 			fade: true,
 			randomQuestions: false,
-			numQuestions: false,
+			numQuestions: null,
 			
 			// Events
-			onStep: function(step, total){
+			onStep: function(step, total, question){
 				
 				// Perform some operations at question change
-				console.log(step);
+				if(question){
+					
+					console.log(question);
+				}
 			},
-			onResults: function(good, total){
+			onResults: function(good, total, questions){
 				
 				// Perform some operations to show a message about the results
 				console.log('results');
@@ -101,7 +108,7 @@
 			questionTpl: '<div class="' + FLEX_CLASS + '">' 
 				+ '<div class="' + NUM_CLASS + '">' 
 				// Quiz num question
-				+ '<%this.question.num%>' 
+				+ '<%this.question.__num%>' 
 				+ '.</div>' 
 				+ '<div class="' + FLEXFILL_CLASS + '">'
 				+ '<h2>' 
@@ -119,17 +126,17 @@
 				+ '<%for(var index in this.answers){%>'
 				+ '<div class="quiz_radiogroup">' 
 				// Quiz radio
-				+ '<input type="radio" id="answer-<%this.answers[index].num%>" ' 
-				+ 'name="question<%this.question.id%>" ' 
-				+ 'value="<%this.answers[index].num%>" ' 
+				+ '<input type="radio" id="answer-<%this.answers[index].__id%>" ' 
+				+ 'name="question<%this.question.__id%>" ' 
+				+ 'value="<%this.answers[index].__id%>" ' 
 				
 				// This data (quiz-name and quiz-value) are mandatory
-				+ 'data-quiz-name="question<%this.question.id%>" ' 
-				+ 'data-quiz-value="<%this.answers[index].num%>"'
+				+ 'data-quiz-name="quizUID_<%this.question.__id%>" ' 
+				+ 'data-quiz-value="<%this.answers[index].__id%>"'
 				// § mandatory
 				
-				+ '<%this.answers[index].checked%>>' 
-				+ '<label for="answer-<%this.answers[index].num%>"><span></span> ' 
+				+ '<%this.answers[index].__checked%>>' 
+				+ '<label for="answer-<%this.answers[index].__id%>"><span></span> ' 
 				// Answer label
 				+ '<%this.answers[index].answer%>' 
 				+ '</label>' 
@@ -141,7 +148,7 @@
 			resultsTpl: '<div class="' + FLEX_CLASS + '">' 
 				+ '<div class="' + NUM_CLASS + '">' 
 				// Quiz num question
-				+ '<%this.question.num%>' 
+				+ '<%this.question.__num%>' 
 				+ '.</div>' 
 				+ '<div class="' + FLEXFILL_CLASS + '">'
 				+ '<h2>' 
@@ -160,7 +167,7 @@
 				+ '<div class="' + RESPONSE_CLASS + '">' 
 				+ '<strong>' 
 				// Answer num
-				+ '<%this.answer.num + 1%>'
+				+ '<%this.answer.__num%>'
 				+ '.</strong> ' 
 				// Answer
 				+ '<%this.answer.answer%>' 
@@ -345,26 +352,26 @@
 				.done(function(data, textStatus, jqXHR)
 				{
 					// Questions
-					quizJson = data[0].questions;
+					quizArr = data[0].questions;
 					
 					// If randomize questions is true...
 					if(settings.randomQuestions){
 						
-						shuffleQuestions(quizJson);
+						shuffleQuestions(quizArr);
 						settings.hidePrevBtn = true;
 					}
 					
 					// If num questions is integer...
-					if(typeof settings.numQuestions == 'number' && settings.numQuestions < quizJson.length){
+					if(typeof settings.numQuestions == 'number' && settings.numQuestions < quizArr.length){
 						
-						quizJson = quizJson.slice(0, parseInt(settings.numQuestions));
+						quizArr = quizArr.slice(0, parseInt(settings.numQuestions));
 					}
 					
 					// Intro
-					intro = data[0].intro? data[0].intro: false;
+					intro = data[0].intro || false;
 					
 					// Number of questions
-					steps = quizJson.length;
+					steps = quizArr.length;
 					
 					// If there is a hash...
 					if(!settings.hidePrevBtn && window.location.hash){
@@ -417,30 +424,23 @@
 				
 				// Unset progress bar
 				showProgress(0);
-				
-				// If 'onStep' is a function...
-				if(typeof settings.onStep === 'function'){
-					
-					// Call onStep function
-					settings.onStep.apply($('#' + QUIZ_ID), ['intro', steps]);
-				}
 			}
 		}
 		
 		// Function: Fade first question or intro
 		function fadeFirst()
 		{
-			// If fase is true...
+			// If 'fade' is true...
 			if(settings.fade){
 				
-				// Fadeout quiz body
+				// Fade out quiz body
 				$('#' + BODY_ID)
 					.fadeOut(300, function()
 					{
 						// Open first question or intro
 						openFirst();
 						
-						// Fadein quiz body
+						// Fade in quiz body
 						$('#' + BODY_ID).fadeIn(300);
 					});
 			} 
@@ -476,30 +476,23 @@
 				
 				// Set progress bar
 				showProgress(id);
-				
-				// If 'onStep' is a function...
-				if(typeof settings.onStep === 'function'){
-					
-					// Call onStep function
-					settings.onStep.apply($('#' + QUIZ_ID), [id, steps]);
-				}
 			}
 		}
 		
 		// Function: Fade a question
 		function fadeQuestion(id)
 		{
-			// If fase is true...
+			// If 'fade' is true...
 			if(settings.fade){
 				
-				// Fadeout quiz body
+				// Fade out quiz body
 				$('#' + BODY_ID)
 					.fadeOut(300, function()
 					{
 						// Open question
 						openQuestion(id);
 						
-						// Fadein quiz body
+						// Fade in quiz body
 						$('#' + BODY_ID).fadeIn(300);
 					});
 			} 
@@ -527,35 +520,28 @@
 			// Unset progress bar
 			showProgress(steps);
 			
-			// If 'onStep' is a function...
-			if(typeof settings.onStep === 'function'){
-				
-				// Call onStep function
-				settings.onStep.apply($('#' + QUIZ_ID), ['results', steps]);
-			}
-			
 			// If 'onResults' is a function...
 			if(typeof settings.onResults === 'function'){
 				
-				// Call onResult function
-				settings.onResults.apply($('#' + QUIZ_ID), [good, steps]);
+				// Call 'onResult' function
+				settings.onResults.apply($('#' + QUIZ_ID), [good, steps, quizArr]);
 			}
 		}
 		
 		// Function: Fade results
 		function fadeResults()
 		{
-			// If fase is true...
+			// If 'fade' is true...
 			if(settings.fade){
 				
-				// Fadeout quiz body
+				// Fade out quiz body
 				$('#' + BODY_ID)
 					.fadeOut(300, function()
 					{
 						// Open results
 						openResults();
 						
-						// Fadein quiz body
+						// Fade in quiz body
 						$('#' + BODY_ID).fadeIn(300);
 					});
 			} 
@@ -571,46 +557,88 @@
 		// Function: Returns a question starting from the id
 		function getQuestion(id)
 		{
-			var question;
+			return (quizArr[id] && [id, quizArr[id]]) || null;
+		}
+	
+		// Function: Set a property of a question
+		function setQuestion(id, prop, value)
+		{
+			// Set property
+			quizArr[id][prop] = value;
+		}
+	
+		// Function: Set response of a question
+		function setResponse(id, value)
+		{
+			// Set __response
+			setQuestion(id, '__response', value)
+		}
+	
+		// Function: Get response of a question
+		function getResponse(id)
+		{
+			// Get response
+			return (quizArr[id] && quizArr[id].__response) || false;
+		}
+	
+		// Function: Returns all responses from quizArr
+		function getResponses()
+		{
+			var responses = {};
 			
-			// Search for question
-			$.each(quizJson, function(i, q)
+			// Search for question with response
+			$.each(quizArr, function(i, q)
 			{
-				// If question key is equal to id...
-				if(i == id){
+				// If response exists...
+				if(q.__response){
 					
-					// Set array with key and question
-					question = [i, q];
+					// Set responses element
+					responses['quizUID_' + i] = q.__response;
 				}
 			});
 			
-			return question;
+			return responses;
+		}
+	
+		// Function: Clear all responses from quizArr
+		function clearResponses()
+		{
+			// Search for question with response
+			$.each(quizArr, function(i, q)
+			{
+				// If response exists...
+				if(q.__response){
+					
+					// Unset response element
+					delete q.__response;
+				}
+			});
 		}
 		
 		// Function: Check for unanswered questions
 		function hasErrors(id)
 		{
-			// Get cookie response
-			var response = JSON.parse(getCookie('response'));
+			// Get responses
+			var responses = JSON.parse(getCookie(COOKIE_ID)) || getResponses();
 			
 			var questionId;
 			var result = true;
 			
-			// If cookie response doesn't exist...
-			if(!response){
+			// If responses doesn't exist...
+			if(!responses){
 				
-				// Set an empty cookie response
-				response = {};
-				setCookie('response', JSON.stringify(response), settings.cookieExpire);
+				// Set an empty cookie responses
+				responses = {};
+				setCookie(COOKIE_ID, JSON.stringify(responses), settings.cookieExpire);
 			}
 			
 			// Search for unanswered questions
-			$.each(quizJson, function(i, q)
+			$.each(quizArr, function(i, q)
 			{
-				questionId = 'question' + i;
+				questionId = 'quizUID_' + i;
 				
 				// If previous question is without answer...
-				if(i < id && !response[questionId]){
+				if(i < id && !responses[questionId]){
 					
 					// Open modal
 					showModal(messages.errmsg[1], true);
@@ -620,7 +648,7 @@
 				} 
 				
 				// If current question is without answer...
-				else if(i == id && !response[questionId]){
+				else if(i == id && !responses[questionId]){
 					
 					// Open modal
 					showModal(messages.errmsg[0], false);
@@ -639,7 +667,7 @@
 			var lastquestion = true;
 			
 			// Search for question
-			$.each(quizJson, function(i, q)
+			$.each(quizArr, function(i, q)
 			{
 				// If question key is greater than id...
 				if(i > id){
@@ -730,7 +758,7 @@
 			// Empty quiz body and quiz buttons areas
 			htmlClear();
 			
-			// If the intro is set in the json... 
+			// If 'intro' is set in the json... 
 			if(intro){
 				
 				// Append intro to quiz body area
@@ -765,15 +793,15 @@
 			// Empty quiz body and quiz buttons areas
 			htmlClear();
 			
-			var questionId = 'question' + q[0];
+			var questionId = 'quizUID_' + q[0];
 			
-			// Get cookie response
-			var response = JSON.parse(getCookie('response'));
+			// Get responses
+			var responses = JSON.parse(getCookie(COOKIE_ID)) || getResponses();
 			
 			// Question object
 			var question = q[1];
-			question.id = q[0];
-			question.num = q[0] + 1;
+			question.__id = q[0];
+			question.__num = q[0] + 1;
 			
 			// Answers array
 			var answers = [];
@@ -783,13 +811,14 @@
 			{
 				// Answer object
 				var answer = r;
-				answer.num = i;
-				answer.checked = '';
+				answer.__id = i;
+				answer.__num = i + 1;
+				answer.__checked = '';
 				
 				// If an answer has already been chosen for the question...
-				if(response && response[questionId] && response[questionId] == i){
+				if(responses && responses[questionId] && responses[questionId] == i){
 					
-					answer.checked = ' checked';
+					answer.__checked = ' checked';
 				}
 				
 				// Push answer in answers array
@@ -813,8 +842,8 @@
 					// Event: Record response
 					$input.on('click', function(e)
 					{
-						// Get cookie response
-						var response = JSON.parse(getCookie('response')) || {};
+						// Get responses
+						var responses = JSON.parse(getCookie(COOKIE_ID)) || getResponses();
 						
 						var name = $(this).data('quizName');
 						var value = $(this).data('quizValue');
@@ -823,11 +852,14 @@
 						var obj = {};
 						obj[name] = '' + value;
 						
-						// Merge new response with other responses
-						$.extend(response, obj);
+						// Set __response in quizArr
+						setResponse(q[0], obj[name]);
 						
-						// Set cookie response
-						setCookie('response', JSON.stringify(response), settings.cookieExpire);
+						// Merge new response with other responses
+						$.extend(responses, obj);
+						
+						// Set cookie responses
+						setCookie(COOKIE_ID, JSON.stringify(responses), settings.cookieExpire);
 					});
 				} 
 				
@@ -864,6 +896,13 @@
 						// Question num
 						var questnum = q[0];
 						
+						// If 'onStep' is a function...
+						if(typeof settings.onStep === 'function'){
+							
+							// Call 'onStep' function
+							settings.onStep.apply($('#' + QUIZ_ID), [questnum, steps, quizArr[questnum]]);
+						}
+						
 						// If 'question ID' is less than zero...
 						if((questnum - 1) < 0){
 							
@@ -898,6 +937,13 @@
 						// Question num
 						var questnum = q[0];
 						
+						// If 'onStep' is a function...
+						if(typeof settings.onStep === 'function'){
+							
+							// Call 'onStep' function
+							settings.onStep.apply($('#' + QUIZ_ID), [questnum, steps, quizArr[questnum]]);
+						}
+						
 						// If there isn't errors...
 						if(hasErrors(questnum)){
 							
@@ -925,6 +971,13 @@
 						// Question num
 						var questnum = q[0];
 						
+						// If 'onStep' is a function...
+						if(typeof settings.onStep === 'function'){
+							
+							// Call 'onStep' function
+							settings.onStep.apply($('#' + QUIZ_ID), [questnum, steps, quizArr[questnum]]);
+						}
+						
 						// If there isn't errors...
 						if(hasErrors(questnum)){
 							
@@ -944,28 +997,29 @@
 			// Reset good response
 			good = 0;
 			
-			// Get cookie response
-			var response = JSON.parse(getCookie('response'));
+			// Get responses
+			var responses = JSON.parse(getCookie(COOKIE_ID)) || getResponses();
 			
 			// Search for question
-			$.each(quizJson, function(i, q)
+			$.each(quizArr, function(i, q)
 			{
-				var questionId = 'question' + i;
+				var questionId = 'quizUID_' + i;
 				
 				// Question object
 				var question = q;
-				question.id = i;
-				question.num = i + 1;
+				question.__id = i;
+				question.__num = i + 1;
 				
 				// Answers
 				$.each(q.answers, function(i, r)
 				{
 					// If an answer has already been chosen for the question...
-					if(response && response[questionId] && response[questionId] == i){
+					if(responses && responses[questionId] && responses[questionId] == i){
 						
 						// Answer object
 						answer = r;
-						answer.num = i;
+						answer.__id = i;
+						answer.__num = i + 1;
 						
 						// If the answer is right...
 						if(r.true == 1){
@@ -998,14 +1052,16 @@
 					{
 						e.preventDefault();
 						
-						// Empty cookie response
-						var response = {};
-						setCookie('response', JSON.stringify(response), settings.cookieExpire);
+						// Clear all __response in quizArr
+						clearResponses();
+						
+						// Erase cookie responses
+						eraseCookie(COOKIE_ID);
 						
 						// If randomize questions is true...
 						if(settings.randomQuestions){
 							
-							shuffleQuestions(quizJson);
+							shuffleQuestions(quizArr);
 						}
 					
 						// Open first question or intro
@@ -1020,7 +1076,8 @@
 			// Width of bar
 			var perc = (id / steps) * 100;
 			
-			if(settings.progressTpl){
+			// If 'progressTpl' is set...
+			if(typeof settings.progressTpl == 'string'){
 				
 				// Progress object
 				var progress = {
@@ -1034,7 +1091,10 @@
 					.html(TemplateEngine(settings.progressTpl, {
 						'progress': progress
 					}));
-			} else{
+			}
+			
+			// Else...
+			else{
 				
 				// Search for quiz progress area
 				var $bar = $('#' + PROGRESS_ID)
@@ -1111,9 +1171,11 @@
 						{
 							e.preventDefault();
 							
-							// Empty cookie response
-							var response = {};
-							setCookie('response', JSON.stringify(response), settings.cookieExpire);
+							// Clear all __response in quizArr
+							clearResponses();
+							
+							// Erase cookie responses
+							eraseCookie(COOKIE_ID);
 							
 							// Open first question or intro
 							fadeFirst();

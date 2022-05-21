@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quiz Educazione Finanziaria</title>
+<title>GEOGRAPHY QUIZ</title>
 
 <!-- meta tags -->
 <meta name="description" content="GEOGRAPHY QUIZ">
@@ -34,7 +34,52 @@
 <!-- main -->
 <section class="main">
   <div class="container">
-    <div id="contenuto"></div>
+    <div id="quiz_container"></div>
+    <div class="code_example">
+      <pre class="prettyprint linenums">&lt;script&gt;
+$(document).ready(function(){
+	
+	var pathJson = window.location.pathname.replace(//[^/]+?.[^/]+?$/, '/');
+	
+	$('#quiz_container').quiz({
+		quizJson: pathJson + &quot;quiz.json&quot;,
+		onResults: function(good, total){
+			
+			var perc = good / total;
+			
+			var alert = $('&lt;div class=&quot;alert&quot;&gt;&lt;/div&gt;')
+				.prependTo($(this).find('#quiz_body'));
+			
+			if(perc == 0){
+				
+				alert.addClass('alert-danger')
+					.html('All wrong! You didn't get an answer right. Go take up knitting!');
+			} else if(perc &gt; 0 &amp;&amp; perc &lt;= 0.25){
+				
+				alert.addClass('alert-danger')
+					.html('Poor result! You only got ' + good + ' out of ' + total + ' answers right. Please try again.');
+			} else if(perc &gt; 0.25 &amp;&amp; perc &lt;= 0.5){
+				
+				alert.addClass('alert-danger')
+					.html('Just enough! You got ' + good + ' out of ' + total + ' answers right. You can do better.');
+			} else if(perc &gt; 0.5 &amp;&amp; perc &lt;= 0.75){
+				
+				alert.addClass('alert-success')
+					.html('Decent result! You got ' + good + ' out of ' + total + ' answers right. Please try again.');
+			} else if(perc &gt; 0.75 &amp;&amp; perc &lt; 1){
+				
+				alert.addClass('alert-success')
+					.html('Good result! You got ' + good + ' out of ' + total + ' answers right. I think we're nearly there.');
+			} else if(perc == 1){
+				
+				alert.addClass('alert-success')
+					.html('Congratulations, you have answered all the questions!');
+			}
+		}
+	}); 
+});
+&lt;/script&gt;</pre>
+    </div>
   </div>
 </section>
 
@@ -54,7 +99,7 @@ $(document).ready(function(){
 	
 	var pathJson = window.location.pathname.replace(/\/[^\/]+?\.[^\/]+?$/, '/');
 	
-	$('#contenuto').quiz({
+	$('#quiz_container').quiz({
 		quizJson: pathJson + "quiz.json",
 		onResults: function(good, total){
 			
@@ -91,6 +136,7 @@ $(document).ready(function(){
 		}
 	}); 
 });
-</script>
+</script> 
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=javascript&amp;skin=sons-of-obsidian"></script>
 </body>
 </html>
