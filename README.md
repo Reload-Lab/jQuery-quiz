@@ -12,8 +12,10 @@ The plugin requires **jQuery 3** and **Bootstrap 4**. Also uses **Fontawesome 4.
 ### Installation
 NPM
 `npm install jquery-quiz`
+
 Yarn
 `yarn add jquery- quiz`
+
 Bower
 `bower install Reload-Lab/ jQuery-quiz`
 
@@ -48,7 +50,7 @@ If you want to customize the plugin, you can instead pass several properties to 
 
 Below is the complete list of properties that can be set.
 
-##### Configuration
+#### Configuration
 |  Options | Type  | Descryption |
 | ------------ | ------------ | ------------ |
 | **quizJson**  | *String*  | The property is mandatory and contains the URL to the data JSON file, that contains the quiz questions and answers. *Default: null*  |
@@ -59,21 +61,19 @@ Below is the complete list of properties that can be set.
 | **numQuestions**  | *Integer*  | The number of questions to load from the question set in the JSON file. *Default: null* (all questions)  |
 | **cookieExpire**  | *Integer*  | Duration in seconds of the cookie that contains the responses to the questions choose by the user. If you set the value to -1, no cookies will be saved. *Default: 3600*  |
 
-##### Events
+#### Events
 |  Options | Type  | Descryption |
 | ------------ | ------------ | ------------ |
 | **onStep**  | *Function*  | Function that is performed before moving on to the next question. The function receives three arguments: *step* (question number), *total* (total number of questions) and *question* (Optional. An array containing the questions with the relative answers given by the user. Property *question.__response* contains the number of the choose answer)  |
 | **onResults**  | *Function*  | Function that is performed when the results of the quiz are shown. It can be used to judge the score obtained based on the percentage of correct answers. The function receives three arguments: *good* (number of right questions), *total* (total number of questions) and *questions* (array containing all the questions with the relative answers given by the user. Property *questions[n].__response* contains the number of the choose answer at the *n* question)  |
 
-##### Templates
+#### Templates
 You can customize the appearance of each step - from the intro page to the summary of the results - setting the following properties of the *options* object, which is passed as the only argument of the *quiz* method.
-
 The plugin uses a small, but efficient, system for compiling templates. You can see how the script works at this link:
 https://krasimirtsonev.com/blog/article/Javascript-template-engine-in-just-20-line
-
 If you change the templates you may also need to revise the** jquery.quiz.css** file to align it with your template.
 
-###### introTpl
+##### introTpl
 Quiz introduction page template, that could contain a welcome message. The compiler passes to the template the parameters of the *intro* object present in the data JSON file. *Default:*
 ```javascript
 '<div class="quiz_intro">' 
@@ -87,7 +87,7 @@ Quiz introduction page template, that could contain a welcome message. The compi
 + '</div>'
 ```
 
-###### questionTpl
+##### questionTpl
 Main template of the quiz, which must contain the question and its answers. The questions are presented to the user one at a time. The compiler passes to the template, one at a time, the elements of the *questions* array present in the data JSON file. 
 Some properties are set by the plugin for its operation. These properties are: *question .__ id*, *question .__ num*, *answer .__ id*, *answer._num* and *answer .__ checked*.
 *The RADIO-type INPUT field is mandatory* and must contain the two attributes *data-quiz-name* and *data-quiz-value*, set respectively on the *system uniq id* of the question and on that of the answer. Without these attributes the response will not be logged and an exception error will be thrown. *Default:*
@@ -134,7 +134,7 @@ Some properties are set by the plugin for its operation. These properties are: *
 + '</div>'
 ```
 
-###### resultsTpl
+##### resultsTpl
 Quiz results page template. The compiler passes to the template the *questions* array present in the data JSON file. *Default:*
 ```javascript
 '<div class="' + FLEX_CLASS + '">' 
@@ -186,7 +186,7 @@ Quiz results page template. The compiler passes to the template the *questions* 
 + '</div>'
 ```
 
-###### startBtnTpl
+##### startBtnTpl
 Quiz start button template. The compiler passes to the template the *messages* object relating to the set language. To find out how to create a script localization file see the *Localization section*. *Default:*
 ```javascript
 '<button class="' + BTN_CLASS + '">' 
@@ -196,7 +196,7 @@ Quiz start button template. The compiler passes to the template the *messages* o
 + '</button>'
 ```
 
-###### prevBtnTpl
+##### prevBtnTpl
 Button template to go back one question. The compiler passes to the template the *messages* object relating to the set language. To find out how to create a script localization file see the *Localization* section. *Default:*
 ```javascript
 '<button class="' + BTN_CLASS + '">' 
@@ -206,7 +206,7 @@ Button template to go back one question. The compiler passes to the template the
 + '</button>'
 ```
 
-###### nextBtnTpl
+##### nextBtnTpl
 Button template to go forward a question. The compiler passes to the template the *messages* object relating to the set language. To find out how to create a script localization file see the *Localization* section. *Default:*
 ```javascript
 '<button class="' + BTN_CLASS + '">' 
@@ -216,7 +216,7 @@ Button template to go forward a question. The compiler passes to the template th
 + '</button>'
 ```
 
-###### resultBtnTpl
+##### resultBtnTpl
 Button template to go to the quiz results page. The compiler passes to the template the *messages* object relating to the set language. To find out how to create a script localization file see the *Localization* section. *Default:*
 ```javascript
 '<button class="' + BTN_CLASS + '">' 
@@ -226,7 +226,7 @@ Button template to go to the quiz results page. The compiler passes to the templ
 + '</button>'
 ```
 
-###### restartBtnTpl
+##### restartBtnTpl
 Button template to reset the result and return to the beginning of the quiz. The compiler passes to the template the *messages* object relating to the set language. To find out how to create a script localization file see the *Localization* section. *Default:*
 ```javascript
 '<button class="' + BTN_CLASS + '">' 
@@ -236,7 +236,7 @@ Button template to reset the result and return to the beginning of the quiz. The
 + '</button>'
 ```
 
-###### modalBtnTpl
+##### modalBtnTpl
 Bootstrap 4 modal button template to close the alert and return to the start of the quiz. The compiler passes to the template the *messages* object relating to the set language. To find out how to create a script localization file see the *Localization* section. *Default:*
 ```javascript
 '<button class="' + BTN_CLASS + '" data-dismiss="modal">' 
@@ -246,7 +246,7 @@ Bootstrap 4 modal button template to close the alert and return to the start of 
 + '</button>'
 ```
 
-###### progressTpl
+##### progressTpl
 Quiz progress bar template. The compiler passes to the template the *progress* object, which has three properties: *step*, *total* and *percent*. If the variable is set to false, the Bootstrap 4 progress bar is used. *Default: false*.
 
 ### Localization
