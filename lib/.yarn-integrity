@@ -1,0 +1,20 @@
+{
+  "systemParams": "win32-x64-83",
+  "modulesFolders": [
+    "lib"
+  ],
+  "flags": [],
+  "linkedModules": [],
+  "topLevelPatterns": [
+    "bootstrap@4.6.2",
+    "font-awesome@4.7.0",
+    "jquery@^3.7.0"
+  ],
+  "lockfileEntries": {
+    "bootstrap@4.6.2": "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.2.tgz#8e0cd61611728a5bf65a3a2b8d6ff6c77d5d7479",
+    "font-awesome@4.7.0": "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133",
+    "jquery@^3.7.0": "https://registry.yarnpkg.com/jquery/-/jquery-3.7.1.tgz#083ef98927c9a6a74d05a6af02806566d16274de"
+  },
+  "files": [],
+  "artifacts": {}
+}

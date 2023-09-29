@@ -26,7 +26,7 @@ The **quiz.json** file contains a complete example of the properties that must b
 
 Instead the **index.html** file contains an example of how to initialize the plugin.
 You can see the script in action at this url:
-https://www.reloadlab.it/cantieri/jQuery-quiz/example/
+https://www.reloadlab.it/cantieri/jquery-quiz/example/
 
 To initialize your quiz:
 1.	Add the stylesheet in the head of your page:

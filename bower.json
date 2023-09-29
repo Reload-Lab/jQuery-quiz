@@ -1,5 +1,5 @@
 {
-  "name": "jquery-quiz",
+  "name": "Reload-Lab/jQuery-quiz",
   "description": "A plugin that allows in a very simple way to create a quiz with questions and answers, using a JSON file that contains all the necessary data",
   "main": "dist/jquery.quiz.js",
   "authors": [
@@ -27,8 +27,8 @@
     "url": "git+https://github.com/Reload-Lab/jQuery-quiz.git"
   },
   "dependencies": {
-    "jquery": "^3.0.0",
-    "bootstrap": "^4.0.0",
-    "font-awesome": "4.7.0"
+    "jquery": "^3.7.0",
+    "bootstrap": "4.6.2",
+	"font-awesome": "4.7.0"
   }
 }

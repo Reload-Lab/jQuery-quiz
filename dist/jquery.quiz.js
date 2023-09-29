@@ -2,17 +2,17 @@
  * jQuery Quiz Plugin
  * https://github.com/Reload-Lab/jQuery-quiz
  *
- * @updated February 25, 2022
+ * @updated Sptemeber 29, 2023
  * @version 2.1.0
  *
  * @author Domenico Gigante <domenico.gigante@reloadlab.it>
- * @copyright (c) 2022 Reload Laboratorio Multimediale <info@reloadlab.it> (httpa://www.reloadlab.it)
+ * @copyright (c) 2023 Reload Laboratorio Multimediale <info@reloadlab.it> (httpa://www.reloadlab.it)
  * @license MIT
  */
  
 (function($){
 	
-	var version = '2.0.0';
+	var version = '2.1.0';
 	
 	// Customizable texts according to the language
 	// (buttons, labels and error messages)
