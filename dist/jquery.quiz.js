@@ -59,6 +59,11 @@
 			NUM_CLASS = 'quiz_num',
 			ALERT_CLASS = 'quiz_alert',
 			BTN_CLASS = 'quiz_btn',
+			BTN_STRT = 'quiz_btn_start',
+			BTN_PREV = 'quiz_btn_prev',
+			BTN_NEXT = 'quiz_btn_next',
+			BTN_RSLT = 'quiz_btn_result',
+			BTN_RWND = 'quiz_btn_rewind',
 			RESPONSE_CLASS = 'quiz_response',
 			PROGRESSBAR_CLASS = 'quiz_progressbar',
 			
@@ -192,27 +197,27 @@
 				// end if 
 				+ '</div>' 
 				+ '</div>',
-			startBtnTpl: '<button class="' + BTN_CLASS + '">' 
+			startBtnTpl: '<button class="' + BTN_CLASS + ' ' + BTN_STRT + '">' 
 				// Button start
 				+ '<%this.messages.start%>' 
 				+ PLAY_ICO 
 				+ '</button>',
-			prevBtnTpl: '<button class="' + BTN_CLASS + '">' 
+			prevBtnTpl: '<button class="' + BTN_CLASS + ' ' + BTN_PREV + '">' 
 				+ BACKWARD_ICO 
 				// Button previous
 				+ '<%this.messages.prev%>' 
 				+ '</button>',
-			nextBtnTpl: '<button class="' + BTN_CLASS + '">' 
+			nextBtnTpl: '<button class="' + BTN_CLASS + ' ' + BTN_NEXT + '">' 
 				// Button next
 				+ '<%this.messages.next%>' 
 				+ FORWARD_ICO 
 				+ '</button>',
-			resultBtnTpl: '<button class="' + BTN_CLASS + '">' 
+			resultBtnTpl: '<button class="' + BTN_CLASS + ' ' + BTN_RSLT + '">' 
 				// Button go to results
 				+ '<%this.messages.results%>' 
 				+ FORWARD_ICO 
 				+ '</button>',
-			restartBtnTpl: '<button class="' + BTN_CLASS + '">' 
+			restartBtnTpl: '<button class="' + BTN_CLASS + ' ' + BTN_RWND + '">' 
 				+ REPEAT_ICO 
 				// Button restart
 				+ '<%this.messages.restart%>' 
@@ -881,42 +886,49 @@
 			// If hide previous button is false...
 			if(!settings.hidePrevBtn){
 				
-				// Append prev button to quiz buttons area
-				$(TemplateEngine(settings.prevBtnTpl, {
-						'question': question,
-						'messages': messages
-					}))
-					.appendTo('#' + BUTTONS_ID)
+				// If no intro and is first question
+				if(!intro && q[0] == 0){
 					
-					// Event: Move on to the prev question
-					.on('click', function(e)
-					{
-						e.preventDefault();
+					// Do nothing!
+				} else{
+				
+					// Append prev button to quiz buttons area
+					$(TemplateEngine(settings.prevBtnTpl, {
+							'question': question,
+							'messages': messages
+						}))
+						.appendTo('#' + BUTTONS_ID)
 						
-						// Question num
-						var questnum = q[0];
-						
-						// If 'onStep' is a function...
-						if(typeof settings.onStep === 'function'){
+						// Event: Move on to the prev question
+						.on('click', function(e)
+						{
+							e.preventDefault();
 							
-							// Call 'onStep' function
-							settings.onStep.apply($('#' + QUIZ_ID), [questnum, steps, quizArr[questnum]]);
-						}
-						
-						// If 'question ID' is less than zero...
-						if((questnum - 1) < 0){
+							// Question num
+							var questnum = q[0];
 							
-							// Open first question or intro
-							fadeFirst();
-						} 
-						
-						// Else...
-						else{
+							// If 'onStep' is a function...
+							if(typeof settings.onStep === 'function'){
+								
+								// Call 'onStep' function
+								settings.onStep.apply($('#' + QUIZ_ID), [questnum, steps, quizArr[questnum]]);
+							}
 							
-							// Open previous question
-							fadeQuestion(questnum - 1);
-						}
-					});
+							// If 'question ID' is less than zero...
+							if((questnum - 1) < 0){
+								
+								// Open first question or intro
+								fadeFirst();
+							} 
+							
+							// Else...
+							else{
+								
+								// Open previous question
+								fadeQuestion(questnum - 1);
+							}
+						});
+				}
 			}
 			
 			// If it is the last question...
